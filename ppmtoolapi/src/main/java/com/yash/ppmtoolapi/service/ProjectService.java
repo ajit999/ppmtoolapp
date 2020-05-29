@@ -1,10 +1,15 @@
 package com.yash.ppmtoolapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.yash.ppmtoolapi.domain.Backlog;
 import com.yash.ppmtoolapi.domain.Project;
 import com.yash.ppmtoolapi.exception.PojectIdException;
+import com.yash.ppmtoolapi.exception.ProjectIdExceptionResponse;
+import com.yash.ppmtoolapi.repository.BacklogRepository;
 import com.yash.ppmtoolapi.repository.ProjectRepository;
 
 @Service
@@ -13,9 +18,23 @@ public class ProjectService {
 	@Autowired
 	ProjectRepository projectRepository;
 	
+	@Autowired
+	private BacklogRepository backlogRepository;
+	
 	public Project saveOrUpdateProject(Project project) {
 		try {
-		
+			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+			
+			if(project.getId()==null) {
+				Backlog backlog=new Backlog();
+				project.setBacklog(backlog);
+				backlog.setProject(project);
+				backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+			}
+			
+			if(project.getId()!=null) {
+				project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+			}
 			return projectRepository.save(project);
 		}catch(Exception ex) {
 			throw new PojectIdException("Project Id '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
