@@ -1,0 +1,19 @@
+package com.yash.ppmtoolapi.domain;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+
+@Entity
+public class ProjectTask {
+@Id
+@GeneratedValue(strategy=GenertionType.IDENTITY)
+private long id;
+@Column(updatabel=false)
+@NotBlank(message="PLease Include a project summary")
+private String summary;
+private String acceptanceCriteria;
+private String status;
+private Integer priority;
+private Date dueDate;
+
+}
