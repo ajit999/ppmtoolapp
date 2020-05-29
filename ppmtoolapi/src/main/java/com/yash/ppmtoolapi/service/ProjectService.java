@@ -1,16 +1,23 @@
+/**
+ * 
+ */
 package com.yash.ppmtoolapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.yash.ppmtoolapi.domain.Backlog;
 import com.yash.ppmtoolapi.domain.Project;
-import com.yash.ppmtoolapi.exception.PojectIdException;
-import com.yash.ppmtoolapi.exception.ProjectIdExceptionResponse;
+import com.yash.ppmtoolapi.exception.ProjectIdException;
 import com.yash.ppmtoolapi.repository.BacklogRepository;
 import com.yash.ppmtoolapi.repository.ProjectRepository;
+
+/**
+ * 
+ * @author AjiT
+ *
+ */
+
 
 @Service
 public class ProjectService {
@@ -37,7 +44,7 @@ public class ProjectService {
 			}
 			return projectRepository.save(project);
 		}catch(Exception ex) {
-			throw new PojectIdException("Project Id '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
+			throw new ProjectIdException("Project Id '"+project.getProjectIdentifier().toUpperCase()+"' already exists");
 		}
 		
 	}
@@ -45,7 +52,7 @@ public class ProjectService {
 	public Project findProjectByIdentifier(String projectId) {
 		Project project=projectRepository.findByProjectIdentifier(projectId);
 		if(project==null) {
-			throw new PojectIdException("Project Id '"+projectId+"' does not exist");
+			throw new ProjectIdException("Project Id '"+projectId+"' does not exist");
 		}
 		return project;
 	}
@@ -57,9 +64,10 @@ public class ProjectService {
 	public void deleteProjectByIdentifier(String projectId) {
 		Project project=projectRepository.findByProjectIdentifier(projectId);
 		if(project==null) {
-			throw new PojectIdException("Cannot delete project wid id '"+projectId+"' this project not exist");
+			throw new ProjectIdException("Cannot delete project wid id '"+projectId+"' this project not exist");
 		}
 		projectRepository.delete(project);
 		
 	}
 }
+

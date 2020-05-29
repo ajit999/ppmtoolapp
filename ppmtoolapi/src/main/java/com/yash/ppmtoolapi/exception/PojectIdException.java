@@ -1,6 +1,5 @@
 package com.yash.ppmtoolapi.exception;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
